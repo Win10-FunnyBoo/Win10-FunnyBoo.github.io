@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<!--该程序由 FunnyBoo 提供-->
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.10/dist/hls.min.js"></script>
+</head>
+
+<body>
+    <video id="player" controls="true">
+        播放视频时出现问题。
+    </video>
+    <script>
+        try {
+            var hls, video
+            function failed(error) {
+                console.error(error);
+                if (confirm(`加载失败！\n原因：${error.toString()}\n点击“确定”关闭窗口，取消则保留在当前页面`)) window.close()
+            };
+            if (Hls.isSupported()) {
+                video = document.getElementById('player');
+                hls = new Hls();
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MEDIA_ATTACHED, () => {
+                    hls.loadSource("https://pull-gy1.vzan.com/437927/628576100404304130/replay.1767010986.98852464.m3u8");
+                });
+                hls.on(Hls.Events.ERROR, function (event, data) {
+                    console.error("Hls error:\nevent:", event, "\ndata:", data);
+                    failed(data.details);
+                });
+            } else {
+                failed(new Error("Hls not supported!"));
+            };
+        } catch (error) {
+            failed(error);
+        };
+    </script>
+</body>
+
+</html>
